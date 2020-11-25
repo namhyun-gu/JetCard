@@ -12,7 +12,7 @@ JetCard is simple flash card application using Jetpack Compose
 
 ## Built with
 
-- Corutines
+- Coroutines
 - Dagger Hilt
 - JetPack
   - Compose
