@@ -5,9 +5,9 @@ JetCard is simple flash card application using Jetpack Compose
 ## Preview
 
 <p>
-  <img src="assets/preview_home.gif" width="33%"/>
-  <img src="assets/preview_category.gif" width="33%"/>
-  <img src="assets/preview_card.gif" width="33%"/>
+  <img src="assets/preview_home.gif" width="32%"/>
+  <img src="assets/preview_category.gif" width="32%"/>
+  <img src="assets/preview_card.gif" width="32%"/>
 </p>
 
 ## Built with
