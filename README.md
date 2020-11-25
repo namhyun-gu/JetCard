@@ -1,22 +1,18 @@
 # JetCard
 
-<table>
-<tr>
-<td>
-JetCard is simple flash card application based on Jetpack Compose
-</td>
-</tr>
-</table>
+JetCard is simple flash card application using Jetpack Compose
 
 ## Preview
 
-<img src="assets/preview_home.gif" width="32%"/>
-<img src="assets/preview_category.gif" width="32%"/>
-<img src="assets/preview_card.gif" width="32%"/>
+<p>
+  <img src="assets/preview_home.gif" width="33%"/>
+  <img src="assets/preview_category.gif" width="33%"/>
+  <img src="assets/preview_card.gif" width="33%"/>
+</p>
 
 ## Built with
 
-- Coroutines
+- Corutines
 - Dagger Hilt
 - JetPack
   - Compose
@@ -27,4 +23,3 @@ JetCard is simple flash card application based on Jetpack Compose
 ## Architecture
 
 ![architecture](assets/jetcard-architecture.png)
-![architecture-snippets](assets/jetcard-architecture-snippets.png)
