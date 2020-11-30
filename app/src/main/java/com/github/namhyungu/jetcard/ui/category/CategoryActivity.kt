@@ -54,8 +54,7 @@ class CategoryActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.getCategory(categoryId)
-        viewModel.getCards(categoryId)
+        viewModel.getCategoryWithContents(categoryId)
     }
 
     companion object {

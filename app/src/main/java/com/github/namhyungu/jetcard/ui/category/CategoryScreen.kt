@@ -44,13 +44,12 @@ fun CategoryScreen(
     onEditCard: (CardContent) -> Unit,
     onDeleteCard: (CardContent) -> Unit,
 ) {
-    val category by viewModel.category.observeAsState()
-    val cards by viewModel.cards.observeAsState()
+    val categoryWithContents by viewModel.categoryWithContents.observeAsState()
 
     Scaffold(
         topBar = {
             CategoryToolbar(
-                category = category,
+                category = categoryWithContents?.category,
                 onNavigateUpClick = onNavigateUpClick,
                 onEditActionClick = onEditCategory,
                 onAddActionClick = onAddCard
@@ -64,10 +63,10 @@ fun CategoryScreen(
     ) { innerPadding ->
         val modifier = Modifier.padding(innerPadding)
 
-        if (cards != null) {
+        if (categoryWithContents?.contents != null) {
             CategoryScreenContent(
                 modifier = modifier,
-                cards = cards!!,
+                cards = categoryWithContents?.contents!!,
                 onEditCard = onEditCard,
                 onDeleteCard = onDeleteCard
             )
