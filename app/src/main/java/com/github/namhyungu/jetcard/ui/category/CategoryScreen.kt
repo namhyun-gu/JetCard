@@ -50,7 +50,7 @@ fun CategoryScreen(
     Scaffold(
         topBar = {
             CategoryToolbar(
-                category = category?.data,
+                category = category,
                 onNavigateUpClick = onNavigateUpClick,
                 onEditActionClick = onEditCategory,
                 onAddActionClick = onAddCard
@@ -64,10 +64,10 @@ fun CategoryScreen(
     ) { innerPadding ->
         val modifier = Modifier.padding(innerPadding)
 
-        if (cards?.data != null) {
+        if (cards != null) {
             CategoryScreenContent(
                 modifier = modifier,
-                cards = cards?.data!!,
+                cards = cards!!,
                 onEditCard = onEditCard,
                 onDeleteCard = onDeleteCard
             )

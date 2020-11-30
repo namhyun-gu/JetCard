@@ -50,17 +50,17 @@ fun CardScreen(
     Scaffold(
         topBar = {
             CardToolbar(
-                category = category?.data,
+                category = category,
                 onNavigateUpClick = onNavigateUpClick
             )
         }
     ) { innerPadding ->
         val modifier = Modifier.padding(innerPadding)
 
-        if (cards?.data != null) {
+        if (cards != null) {
             CardScreenContent(
                 modifier = modifier,
-                cards = cards?.data!!,
+                cards = cards!!,
                 onCardActionClick = onCardActionClick,
                 onAllCardsDone = onAllCardsDone
             )

@@ -20,16 +20,13 @@ import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
 import com.github.namhyungu.jetcard.R
 import com.github.namhyungu.jetcard.model.CardCategory
-import com.github.namhyungu.jetcard.model.Resource
 import com.github.namhyungu.jetcard.ui.component.JetCardTopAppBar
-import com.github.namhyungu.jetcard.ui.component.ResourceContent
 import com.github.namhyungu.jetcard.ui.theme.JetCardTheme
 
 typealias OnCategoryClick = (CardCategory) -> Unit
 
 typealias OnCategoryPinnedChange = (CardCategory) -> Unit
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel,
@@ -48,14 +45,8 @@ fun HomeScreen(
         }
     ) { innerPadding ->
         val modifier = Modifier.padding(innerPadding)
-        LoadingContent(
-            empty = false,
-            emptyContent = {
-                FullScreenLoading()
-            },
-            loading = false,
-            onRefresh = {}
-        ) {
+
+        if (categories != null) {
             HomeScreenContent(
                 modifier = modifier,
                 categories = categories!!,
@@ -66,62 +57,33 @@ fun HomeScreen(
     }
 }
 
-@ExperimentalMaterialApi
-@Composable
-private fun LoadingContent(
-    empty: Boolean,
-    emptyContent: @Composable () -> Unit,
-    loading: Boolean,
-    onRefresh: () -> Unit,
-    content: @Composable () -> Unit
-) {
-    if (empty) {
-        emptyContent()
-    } else {
-        content()
-    }
-}
-
-@Composable
-private fun FullScreenLoading() {
-    Box(modifier = Modifier.fillMaxSize().wrapContentSize(Alignment.Center)) {
-        CircularProgressIndicator()
-    }
-}
-
 @Composable
 private fun HomeScreenContent(
     modifier: Modifier = Modifier,
-    categories: Resource<List<CardCategory>>,
+    categories: List<CardCategory>,
     onCategoryClick: OnCategoryClick,
     onCategoryPinnedChange: OnCategoryPinnedChange
 ) {
-    ResourceContent(
-        resource = categories,
-        onEmpty = { Box(modifier.fillMaxSize()) { /* Empty Content */ } },
-        onError = { Text(text = "Failed load content") }
-    ) { data ->
-        val (pinned, unpinned) = data.partition { it.isPinned }
+    val (pinned, unpinned) = categories.partition { it.isPinned }
 
-        Column(modifier = modifier) {
-            if (pinned.isNotEmpty()) {
-                CategoryListHeader(title = "Pinned")
-                CategoryList(
-                    modifier = modifier.padding(horizontal = 12.dp),
-                    categories = pinned,
-                    onCategoryClick = onCategoryClick,
-                    onCategoryPinnedChange = onCategoryPinnedChange
-                )
-            }
-            if (unpinned.isNotEmpty()) {
-                CategoryListHeader(title = "Unpinned")
-                CategoryList(
-                    modifier = modifier.padding(horizontal = 12.dp),
-                    categories = unpinned,
-                    onCategoryClick = onCategoryClick,
-                    onCategoryPinnedChange = onCategoryPinnedChange
-                )
-            }
+    Column(modifier = modifier) {
+        if (pinned.isNotEmpty()) {
+            CategoryListHeader(title = "Pinned")
+            CategoryList(
+                modifier = modifier.padding(horizontal = 12.dp),
+                categories = pinned,
+                onCategoryClick = onCategoryClick,
+                onCategoryPinnedChange = onCategoryPinnedChange
+            )
+        }
+        if (unpinned.isNotEmpty()) {
+            CategoryListHeader(title = "Unpinned")
+            CategoryList(
+                modifier = modifier.padding(horizontal = 12.dp),
+                categories = unpinned,
+                onCategoryClick = onCategoryClick,
+                onCategoryPinnedChange = onCategoryPinnedChange
+            )
         }
     }
 }
