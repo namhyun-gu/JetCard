@@ -20,4 +20,9 @@ abstract class CardCategoryDao : BaseDao<CardCategory> {
     @Query("SELECT * FROM card_category WHERE id = :id")
     abstract suspend fun selectWithContents(id: Int): CardCategoryWithContents
 
+    @Transaction
+    open suspend fun delete(id: Int) {
+        val category = selectById(id)
+        delete(category)
+    }
 }

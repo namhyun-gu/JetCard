@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.github.namhyungu.jetcard.data.CardCategoryDao
 import com.github.namhyungu.jetcard.data.CardContentDao
 import com.github.namhyungu.jetcard.model.CardCategoryWithContents
-import com.github.namhyungu.jetcard.model.CardContent
 import kotlinx.coroutines.launch
 
 class CategoryViewModel @ViewModelInject constructor(
@@ -25,10 +24,16 @@ class CategoryViewModel @ViewModelInject constructor(
         }
     }
 
-    fun deleteCard(categoryId: Int, card: CardContent) {
+    fun deleteCard(categoryId: Int, cardId: Int) {
         viewModelScope.launch {
-            cardContentDao.delete(card)
+            cardContentDao.delete(cardId)
             getCategoryWithContents(categoryId)
+        }
+    }
+
+    fun deleteCategory(categoryId: Int) {
+        viewModelScope.launch {
+            categoryDao.delete(categoryId)
         }
     }
 }

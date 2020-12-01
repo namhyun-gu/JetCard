@@ -40,6 +40,10 @@ class CategoryActivity : AppCompatActivity() {
                         launchCardActivity(this, categoryId)
                     },
                     onEditCategory = {},
+                    onDeleteCategory = {
+                        viewModel.deleteCategory(categoryId)
+                        finish()
+                    },
                     onAddCard = {
                         launchAddCardActivity(this, categoryId)
                     },

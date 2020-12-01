@@ -2,7 +2,6 @@ package com.github.namhyungu.jetcard.ui.category
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.ScrollableColumn
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -40,9 +39,10 @@ fun CategoryScreen(
     onNavigateUpClick: () -> Unit,
     onPlayClick: () -> Unit,
     onEditCategory: () -> Unit,
+    onDeleteCategory: () -> Unit,
     onAddCard: () -> Unit,
     onEditCard: (CardContent) -> Unit,
-    onDeleteCard: (CardContent) -> Unit,
+    onDeleteCard: (Int) -> Unit,
 ) {
     val categoryWithContents by viewModel.categoryWithContents.observeAsState()
 
@@ -51,6 +51,7 @@ fun CategoryScreen(
             CategoryToolbar(
                 category = categoryWithContents?.category,
                 onNavigateUpClick = onNavigateUpClick,
+                onDeleteActionClick = onDeleteCategory,
                 onEditActionClick = onEditCategory,
                 onAddActionClick = onAddCard
             )
@@ -79,6 +80,7 @@ fun CategoryToolbar(
     modifier: Modifier = Modifier,
     category: CardCategory?,
     onNavigateUpClick: () -> Unit,
+    onDeleteActionClick: () -> Unit,
     onEditActionClick: () -> Unit,
     onAddActionClick: () -> Unit
 ) {
@@ -88,51 +90,63 @@ fun CategoryToolbar(
     val typography = MaterialTheme.typography
     val colors = MaterialTheme.colors
 
-    Column(
-        modifier = Modifier.background(MaterialTheme.colors.surface)
+    Surface(
+        elevation = 4.dp
     ) {
-        JetCardTopAppBar(
-            modifier = modifier,
-            title = "",
-            navigationIcon = {
-                IconButton(onClick = onNavigateUpClick) {
-                    Icon(Icons.Rounded.ArrowBack)
+        Column {
+            JetCardTopAppBar(
+                modifier = modifier,
+                title = "",
+                navigationIcon = {
+                    IconButton(onClick = onNavigateUpClick) {
+                        Icon(Icons.Rounded.ArrowBack)
+                    }
+                },
+                actions = {
+                    Providers(
+                        AmbientContentAlpha provides ContentAlpha.high
+                    ) {
+                        IconButton(
+                            icon = { Icon(Icons.Rounded.Edit) },
+                            onClick = onEditActionClick
+                        )
+                        IconButton(
+                            icon = { Icon(Icons.Rounded.Delete) },
+                            onClick = onDeleteActionClick,
+                        )
+                        IconButton(
+                            icon = { Icon(Icons.Rounded.PostAdd) },
+                            onClick = onAddActionClick
+                        )
+                    }
                 }
-            },
-            actions = {
-                IconButton(
-                    icon = { Icon(Icons.Rounded.Edit) },
-                    onClick = onEditActionClick
+            )
+            Column(
+                modifier = Modifier
+                    .padding(
+                        start = 88.dp,
+                        end = 16.dp,
+                        top = 16.dp,
+                        bottom = 28.dp
+                    ),
+                verticalArrangement = Arrangement.Bottom
+            ) {
+                Text(
+                    title,
+                    fontWeight = FontWeight.Black,
+                    style = typography.h5
                 )
-                IconButton(
-                    icon = { Icon(Icons.Rounded.Add) },
-                    onClick = onAddActionClick
-                )
+                if (subtitle.isNotBlank()) {
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        subtitle,
+                        style = typography.subtitle2,
+                        color = colors.onSurface.copy(
+                            alpha = 0.56f
+                        )
+                    )
+                }
             }
-        )
-        Column(
-            modifier = Modifier
-                .padding(
-                    start = 88.dp,
-                    end = 16.dp,
-                    top = 16.dp,
-                    bottom = 28.dp
-                ),
-            verticalArrangement = Arrangement.Bottom
-        ) {
-            Text(
-                title,
-                fontWeight = FontWeight.Black,
-                style = typography.h5
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                subtitle,
-                style = typography.subtitle2,
-                color = colors.onSurface.copy(
-                    alpha = 0.56f
-                )
-            )
         }
     }
 }
@@ -145,6 +159,7 @@ fun CategoryToolbarPreview() {
             category = CardCategory(name = "Category", description = "Description"),
             onNavigateUpClick = {},
             onEditActionClick = {},
+            onDeleteActionClick = {},
             onAddActionClick = {}
         )
     }
@@ -155,7 +170,7 @@ private fun CategoryScreenContent(
     modifier: Modifier = Modifier,
     cards: List<CardContent>,
     onEditCard: (CardContent) -> Unit,
-    onDeleteCard: (CardContent) -> Unit,
+    onDeleteCard: (Int) -> Unit,
 ) {
     var openCardDialog by remember { mutableStateOf(false) }
     var clickedCard by remember { mutableStateOf<CardContent?>(null) }
@@ -184,7 +199,7 @@ private fun CategoryScreenContent(
 fun CardDialog(
     card: CardContent,
     onEditCard: (CardContent) -> Unit,
-    onDeleteCard: (CardContent) -> Unit,
+    onDeleteCard: (Int) -> Unit,
     onDismiss: () -> Unit
 ) {
     Dialog(
@@ -194,7 +209,7 @@ fun CardDialog(
                 onActionClick = { action ->
                     when (action.id) {
                         "action_edit" -> onEditCard(card)
-                        "action_delete" -> onDeleteCard(card)
+                        "action_delete" -> onDeleteCard(card.id)
                     }
                     onDismiss()
                 },
