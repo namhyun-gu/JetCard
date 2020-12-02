@@ -3,6 +3,8 @@ package com.github.namhyungu.jetcard.ui.home
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.platform.setContent
 import com.github.namhyungu.jetcard.ui.category.launchAddCategoryActivity
 import com.github.namhyungu.jetcard.ui.category.launchCategoryActivity
@@ -17,18 +19,19 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             JetCardTheme {
+                val categories by viewModel.cardCategories.observeAsState()
+
                 HomeScreen(
-                    viewModel,
+                    categories,
                     onNewCategoryClick = {
                         launchAddCategoryActivity(this)
                     },
                     onCategoryClick = { category ->
                         launchCategoryActivity(this, category.id)
-                    },
-                    onCategoryPinnedChange = { category ->
-                        viewModel.updateCategoryPin(category)
                     }
-                )
+                ) { category ->
+                    viewModel.updateCategoryPin(category)
+                }
             }
         }
     }

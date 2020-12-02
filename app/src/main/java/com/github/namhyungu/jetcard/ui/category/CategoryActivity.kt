@@ -5,6 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.platform.setContent
 import com.github.namhyungu.jetcard.ui.card.launchAddCardActivity
 import com.github.namhyungu.jetcard.ui.card.launchCardActivity
@@ -31,8 +33,10 @@ class CategoryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             JetCardTheme {
+                val categoryWithContents by viewModel.categoryWithContents.observeAsState()
+
                 CategoryScreen(
-                    viewModel,
+                    categoryWithContents,
                     onNavigateUpClick = {
                         finish()
                     },
@@ -47,11 +51,10 @@ class CategoryActivity : AppCompatActivity() {
                     onAddCard = {
                         launchAddCardActivity(this, categoryId)
                     },
-                    onEditCard = {},
-                    onDeleteCard = { card ->
-                        viewModel.deleteCard(categoryId, card)
-                    }
-                )
+                    onEditCard = {}
+                ) { card ->
+                    viewModel.deleteCard(categoryId, card)
+                }
             }
         }
     }

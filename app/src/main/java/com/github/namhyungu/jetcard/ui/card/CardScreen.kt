@@ -5,7 +5,6 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.savedinstancestate.savedInstanceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,14 +38,12 @@ typealias OnCardActionClick = (cardId: Int, action: String) -> Unit
 
 @Composable
 fun CardScreen(
-    viewModel: CardViewModel,
+    category: CardCategory?,
+    cards: List<CardContent>?,
     onNavigateUpClick: () -> Unit,
     onCardActionClick: OnCardActionClick,
     onAllCardsDone: () -> Unit
 ) {
-    val category by viewModel.category.observeAsState()
-    val cards by viewModel.cards.observeAsState()
-
     Scaffold(
         topBar = {
             CardToolbar(
@@ -60,7 +57,7 @@ fun CardScreen(
         if (cards != null) {
             CardScreenContent(
                 modifier = modifier,
-                cards = cards!!,
+                cards = cards,
                 onCardActionClick = onCardActionClick,
                 onAllCardsDone = onAllCardsDone
             )

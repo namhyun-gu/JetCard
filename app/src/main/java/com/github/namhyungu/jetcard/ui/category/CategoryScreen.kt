@@ -8,7 +8,6 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -19,6 +18,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.ui.tooling.preview.Preview
 import com.github.namhyungu.jetcard.R
 import com.github.namhyungu.jetcard.model.CardCategory
+import com.github.namhyungu.jetcard.model.CardCategoryWithContents
 import com.github.namhyungu.jetcard.model.CardContent
 import com.github.namhyungu.jetcard.model.CardStatus
 import com.github.namhyungu.jetcard.ui.component.JetCardTopAppBar
@@ -35,7 +35,7 @@ typealias OnCardDialogAction = (CardDialogAction) -> Unit
 
 @Composable
 fun CategoryScreen(
-    viewModel: CategoryViewModel,
+    categoryWithContents: CardCategoryWithContents?,
     onNavigateUpClick: () -> Unit,
     onPlayClick: () -> Unit,
     onEditCategory: () -> Unit,
@@ -44,8 +44,6 @@ fun CategoryScreen(
     onEditCard: (CardContent) -> Unit,
     onDeleteCard: (Int) -> Unit,
 ) {
-    val categoryWithContents by viewModel.categoryWithContents.observeAsState()
-
     Scaffold(
         topBar = {
             CategoryToolbar(
@@ -67,7 +65,7 @@ fun CategoryScreen(
         if (categoryWithContents?.contents != null) {
             CategoryScreenContent(
                 modifier = modifier,
-                cards = categoryWithContents?.contents!!,
+                cards = categoryWithContents.contents,
                 onEditCard = onEditCard,
                 onDeleteCard = onDeleteCard
             )

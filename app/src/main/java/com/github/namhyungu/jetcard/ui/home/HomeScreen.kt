@@ -10,8 +10,6 @@ import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Assignment
 import androidx.compose.material.icons.rounded.PushPin
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -29,13 +27,11 @@ typealias OnCategoryPinnedChange = (CardCategory) -> Unit
 
 @Composable
 fun HomeScreen(
-    viewModel: HomeViewModel,
+    categories: List<CardCategory>?,
     onNewCategoryClick: () -> Unit,
     onCategoryClick: OnCategoryClick,
     onCategoryPinnedChange: OnCategoryPinnedChange
 ) {
-    val categories by viewModel.cardCategories.observeAsState()
-
     Scaffold(
         topBar = { JetCardTopAppBar(title = stringResource(id = R.string.app_name)) },
         floatingActionButton = {
@@ -49,7 +45,7 @@ fun HomeScreen(
         if (categories != null) {
             HomeScreenContent(
                 modifier = modifier,
-                categories = categories!!,
+                categories = categories,
                 onCategoryClick = onCategoryClick,
                 onCategoryPinnedChange = onCategoryPinnedChange
             )
