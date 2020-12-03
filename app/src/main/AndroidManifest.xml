@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.github.namhyungu.jetcard">
 
     <application
@@ -22,5 +23,15 @@
         <activity android:name=".ui.category.AddCategoryActivity" />
         <activity android:name=".ui.card.CardActivity" />
         <activity android:name=".ui.card.AddCardActivity" />
+
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="com.github.namhyungu.jetcard.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+            <meta-data
+                android:name="com.github.namhyungu.jetcard.startup.TimberInitializer"
+                android:value="androidx.startup" />
+        </provider>
     </application>
 </manifest>

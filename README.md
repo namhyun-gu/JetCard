@@ -19,6 +19,7 @@ JetCard is simple flash card application using Jetpack Compose
   - LiveData
   - ViewModel
   - Room
+  - App Startup
 
 ## Architecture
 
